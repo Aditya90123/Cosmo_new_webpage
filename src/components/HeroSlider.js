@@ -8,11 +8,9 @@ const images = [
 ];
 
 export default function HeroSlider() {
-  const [index, setIndex] = useState(0);
-
   useEffect(() => {
     const t = setInterval(() => {
-      setIndex((i) => (i + 1) % images.length);
+      // Sliding functionality if needed later
     }, 4500);
     return () => clearInterval(t);
   }, []);
