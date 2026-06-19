@@ -1,8 +1,10 @@
 import HeroSlider from "../components/HeroSlider";
+import GSAPScrollSection from "../components/GSAPScrollSection";
 import StatsSection from "../components/StatsSection";
-import ApplicationsSection from "../components/ApplicationsSection";
 import WhyCosmo from "../components/WhyCosmo";
 import ProductGrid from "../components/ProductGrid";
+import WorldMap from "../components/WorldMap";
+import AnnounceScroll from "../components/AnnounceScroll";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -11,11 +13,10 @@ export default function Home() {
       {/* HERO */}
       <HeroSlider />
 
-      {/* STATS */}
-      <StatsSection />
+      <GSAPScrollSection />
 
-      {/* APPLICATIONS */}
-      <ApplicationsSection />
+      {/* OUR PRESENCE (STATS) */}
+      <StatsSection />
 
       {/* WHY COSMO */}
       <WhyCosmo />
@@ -33,12 +34,15 @@ export default function Home() {
           padding: "100px 32px",
         }}
       >
-        <h2 style={{ fontSize: 34, marginBottom: 36 }}>
-          Our Products
-        </h2>
-
+        <h2 style={{ fontSize: 34, marginBottom: 36 }}>Our Products</h2>
         <ProductGrid />
       </motion.section>
+
+      {/* WORLD MAP */}
+      <WorldMap />
+
+      {/* ANNOUNCEMENT SCROLL */}
+      <AnnounceScroll />
     </>
   );
 }

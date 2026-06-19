@@ -1,0 +1,65 @@
+.scroll-section {
+  position: relative;
+  min-height: 80vh;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  text-align: center;
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+}
+
+.text-container {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.scroll-text {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  color: #9ca3af;
+  letter-spacing: -0.03em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.first-text,
+.second-text {
+  display: block;
+  text-align: center;
+}
+
+.first-text {
+  opacity: 1;
+}
+
+.second-text {
+  opacity: 0;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  transform: scale(0.8) translateY(40px);
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}

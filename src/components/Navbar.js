@@ -4,14 +4,41 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState("down");
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    let scrollTimeout;
+    let lastScrollY = window.scrollY;
+    
+    const onScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+      setIsScrolling(true);
+      
+      // Determine scroll direction
+      if (currentScrollY > lastScrollY) {
+        setScrollDirection("down");
+      } else if (currentScrollY < lastScrollY) {
+        setScrollDirection("up");
+      }
+      
+      lastScrollY = currentScrollY;
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
+    };
+    
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, []);
 
   const handleMenuToggle = () => setMenuOpen((open) => !open);
@@ -40,12 +67,16 @@ export default function Navbar() {
     <header className={scrolled ? "site-header site-header--blur" : "site-header"}>
       <div className="site-header__inner">
         <button
-          className={`site-header__menu ${menuOpen ? "site-header__menu--open" : ""}`}
+          className={`site-header__menu ${menuOpen ? "site-header__menu--open" : ""} ${isScrolling ? "site-header__menu--scrolling" : ""}`}
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
           onClick={handleMenuToggle}
         >
-          <span className="site-header__menu-icon" />
+          <img 
+            src="/images/HAMBURGER.png" 
+            alt="Menu" 
+            className={`site-header__menu-icon ${isScrolling ? (scrollDirection === "down" ? "site-header__menu-icon--clockwise" : "site-header__menu-icon--anticlockwise") : ""}`} 
+          />
         </button>
 
         <nav className={`site-header__nav ${menuOpen ? "site-header__nav--open" : ""}`} aria-label="Navigation options">

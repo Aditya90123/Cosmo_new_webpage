@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Applications from "./pages/Applications";
 import Contact from "./pages/Contact";
@@ -20,6 +21,8 @@ export default function App() {
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/products/:id" element={<PageTransition><ProductDetail /></PageTransition>} />
       </Routes>
+
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -117,34 +117,18 @@ a {
 
 .site-header__menu-icon {
   display: block;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 28% 28%, rgba(255,255,255,0.95), transparent 28%),
-    radial-gradient(circle at 68% 22%, rgba(236, 72, 153, 0.8), transparent 25%),
-    radial-gradient(circle at 58% 72%, rgba(56, 189, 248, 0.9), transparent 26%),
-    linear-gradient(135deg, rgba(99,102,241,0.95), rgba(59,130,246,0.9));
-  box-shadow: inset 0 0 18px rgba(255,255,255,0.4), 0 0 28px rgba(56, 189, 248, 0.22);
-  position: relative;
-  animation: siri-orb 4.5s ease-in-out infinite;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.site-header__menu-icon::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent 26%);
+.site-header__menu--scrolling .site-header__menu-icon--clockwise {
+  animation: rotate-blink-clockwise 0.8s ease-in-out infinite;
 }
 
-.site-header__menu-icon::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.28);
-  opacity: 0.9;
+.site-header__menu--scrolling .site-header__menu-icon--anticlockwise {
+  animation: rotate-blink-anticlockwise 0.8s ease-in-out infinite;
 }
 
 @keyframes siri-ring {
@@ -164,6 +148,75 @@ a {
   50% {
     transform: scale(0.98) translateY(-1px);
     box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 0 34px rgba(56, 189, 248, 0.28);
+  }
+}
+
+@keyframes rotate-blink {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: rotate(90deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: rotate(270deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate-blink-clockwise {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: rotate(90deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: rotate(270deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate-blink-anticlockwise {
+  0% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+  25% {
+    transform: rotate(270deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: rotate(90deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(0deg);
+    opacity: 1;
   }
 }
 
@@ -286,6 +339,149 @@ a {
   box-shadow: 0 12px 24px rgba(29, 78, 216, 0.24);
 }
 
+/* ================= CLIENT LOGOS SECTION ================= */
+.client-logos-section {
+  background: #ffffff;
+  padding: 100px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.client-logos-section::before,
+.client-logos-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.client-logos-section::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 0%, transparent 100%);
+}
+
+.client-logos-section::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 0%, transparent 100%);
+}
+
+.client-logos-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.client-logos-heading {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.client-logos-heading h2 {
+  font-size: 42px;
+  font-weight: 800;
+  color: #3b82f6;
+  margin-bottom: 16px;
+}
+
+.client-logos-heading p {
+  font-size: 18px;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.client-logos-row {
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.client-logos-row:last-child {
+  margin-bottom: 0;
+}
+
+.client-logos-track {
+  display: flex;
+  gap: 60px;
+  animation: scroll-logos 30s linear infinite;
+  padding: 20px 0;
+}
+
+.client-logos-track-reverse {
+  animation: scroll-logos-reverse 30s linear infinite;
+}
+
+.client-logo-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  height: 100px;
+}
+
+.client-logo-image {
+  max-width: 160px;
+  max-height: 80px;
+  object-fit: contain;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  animation: logo-float 3s ease-in-out infinite;
+}
+
+.client-logo-image:nth-child(3n+1) {
+  animation-delay: 0s;
+}
+
+.client-logo-image:nth-child(3n+2) {
+  animation-delay: 0.5s;
+}
+
+.client-logo-image:nth-child(3n+3) {
+  animation-delay: 1s;
+}
+
+.client-logo-image:hover {
+  opacity: 1;
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 8px 16px rgba(37, 99, 235, 0.3));
+}
+
+@keyframes scroll-logos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-logos-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes logo-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Pause animation on hover */
+.client-logos-track:hover,
+.client-logos-track-reverse:hover {
+  animation-play-state: paused;
+}
+
 /* ================= BUTTONS (APPLE STYLE) ================= */
 
 /* PRIMARY BUTTON */
@@ -354,3 +550,50 @@ img {
 img:hover {
   transform: scale(1.03);
 }
+
+/* ================= SCROLL VIDEO SECTION ================= */
+.scroll-video-container {
+  overflow: visible !important;
+}
+
+.scroll-video-sticky {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+}
+
+.scroll-video-preloader {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  backdrop-filter: blur(10px);
+}
+
+.scroll-video-preloader h3 {
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+}
+
+.scroll-video-preloader div div {
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+}
+
+/* ================= SITE FOOTER ================= */
+.site-footer {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 40px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .site-footer {
+    padding: 60px 16px 24px !important;
+  }
+}
+
+

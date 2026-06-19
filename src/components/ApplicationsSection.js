@@ -48,11 +48,11 @@ export default function ApplicationsSection() {
               whileHover={{ y: -10 }}
               transition={{ type: "spring", stiffness: 200 }}
               style={{
-                background: "#fff",
+                background: "transparent",
                 padding: 32,
                 borderRadius: 20,
-                border: "1px solid #e5e7eb",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.06)",
+                border: "1px solid rgba(0,0,0,0.1)",
+                boxShadow: "none",
               }}
             >
               <AnimatedIcon path={a.icon} />

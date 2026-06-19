@@ -7,7 +7,7 @@ export default function AnimatedIcon({ path }) {
       height="48"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#2563eb"
+      stroke="#9ca3af"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"

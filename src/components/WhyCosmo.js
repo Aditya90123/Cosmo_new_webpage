@@ -1,45 +1,76 @@
-import AnimatedIcon from "./AnimatedIcon";
+import { motion } from "framer-motion";
 
 const points = [
-  { text: "Japanese Engineering Precision", icon: "M3 3h18v18H3z" },
-  { text: "Repeatable & Stable Results", icon: "M12 2v20" },
-  { text: "Global Support Network", icon: "M2 12h20" },
-  { text: "Industry-Proven Reliability", icon: "M4 4l16 16" },
+  { text: "Japanese Engineering Precision", icon: "⚙️" },
+  { text: "Repeatable & Stable Results", icon: "📊" },
+  { text: "Global Support Network", icon: "🌍" },
+  { text: "Industry-Proven Reliability", icon: "✅" },
 ];
 
 export default function WhyCosmo() {
   return (
     <section
       style={{
-        background: "#0f172a",
-        color: "white",
+        background: "#ffffff",
+        color: "#000000",
         padding: "120px 32px",
       }}
     >
       <div style={{ maxWidth: 1400, margin: "auto" }}>
-        <h2 style={{ fontSize: 36, marginBottom: 48 }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{
+            fontSize: "2.5rem",
+            fontWeight: "600",
+            color: "#000000",
+            marginBottom: "64px",
+            letterSpacing: "-0.02em",
+            textAlign: "center"
+          }}
+        >
           Why COSMO
-        </h2>
+        </motion.h2>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+            gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
             gap: 32,
           }}
         >
           {points.map((p, i) => (
-            <div
+            <motion.div
               key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
               style={{
-                background: "rgba(255,255,255,0.08)",
-                padding: 28,
-                borderRadius: 20,
+                background: "#f5f5f7",
+                padding: "48px",
+                borderRadius: "18px",
+                transition: "all 0.3s ease",
               }}
             >
-              <AnimatedIcon path={p.icon} />
-              <p style={{ marginTop: 16 }}>{p.text}</p>
-            </div>
+              <div style={{
+                fontSize: "2.5rem",
+                marginBottom: "20px",
+              }}>
+                {p.icon}
+              </div>
+              <p style={{
+                fontSize: "1.15rem",
+                fontWeight: "600",
+                color: "#000000",
+                lineHeight: "1.5",
+                letterSpacing: "-0.01em"
+              }}>
+                {p.text}
+              </p>
+            </motion.div>
           ))}
         </div>
       </div>

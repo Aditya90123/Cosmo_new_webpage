@@ -24,7 +24,30 @@ const featuredProducts = [
 ];
 
 export default function ProductGrid() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // Flat list of all products for modal navigation
+  const productList = products;
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  // Compute the list of products belonging to the same category as the currently selected product
+  const selectedProduct = productList[selectedIndex];
+  const categoryProducts = selectedProduct ? products.filter(p => p.cat === selectedProduct.cat) : [];
+  // Map category products back to their indices in the full products array for navigation
+  const categoryIndices = categoryProducts.map(p => products.findIndex(pl => pl.id === p.id));
+  // Determine the index of the selected product within the category list
+  const catPos = selectedProduct ? categoryProducts.findIndex(p => p.id === selectedProduct.id) : 0;
+
+  // Handlers for navigating within the same category
+  const goPrev = () => {
+    if (categoryIndices.length > 1) {
+      const prevPos = (catPos - 1 + categoryIndices.length) % categoryIndices.length;
+      setSelectedIndex(categoryIndices[prevPos]);
+    }
+  };
+  const goNext = () => {
+    if (categoryIndices.length > 1) {
+      const nextPos = (catPos + 1) % categoryIndices.length;
+      setSelectedIndex(categoryIndices[nextPos]);
+    }
+  };
 
   return (
     <>
@@ -69,7 +92,7 @@ export default function ProductGrid() {
             <motion.button
               key={cardData.id}
               type="button"
-              onClick={() => setSelectedProduct(product)}
+              onClick={() => setSelectedIndex(index)}
               initial={{ opacity: 0, y: 60, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ 
@@ -181,7 +204,7 @@ export default function ProductGrid() {
               placeItems: "center",
               padding: 24,
             }}
-            onClick={() => setSelectedProduct(null)}
+            onClick={() => setSelectedIndex(null)}
           >
             <motion.div
               initial={{ opacity: 0, y: 28, scale: 0.96 }}
@@ -200,13 +223,13 @@ export default function ProductGrid() {
             >
               <div style={{ position: "relative", height: 380 }}>
                 <img
-                  src={selectedProduct.image}
+                  src={productList[selectedIndex].image}
                   alt={selectedProduct.name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
                 <button
                   type="button"
-                  onClick={() => setSelectedProduct(null)}
+                  onClick={() => setSelectedIndex(null)}
                   style={{
                     position: "absolute",
                     top: 20,
@@ -220,22 +243,75 @@ export default function ProductGrid() {
                     fontSize: 28,
                     cursor: "pointer",
                     boxShadow: "0 14px 30px rgba(15,23,42,0.18)",
+                    zIndex: 10,
                   }}
                 >
                   ×
                 </button>
+                {categoryIndices.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={goPrev}
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: 20,
+                        transform: "translateY(-50%)",
+                        background: "rgba(0,0,0,0.5)",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: 48,
+                        height: 48,
+                        color: "#fff",
+                        fontSize: 24,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+                      }}
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      onClick={goNext}
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        right: 20,
+                        transform: "translateY(-50%)",
+                        background: "rgba(0,0,0,0.5)",
+                        border: "none",
+                        borderRadius: "50%",
+                        width: 48,
+                        height: 48,
+                        color: "#fff",
+                        fontSize: 24,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+                      }}
+                    >
+                      →
+                    </button>
+                  </>
+                )}
               </div>
 
               <div style={{ padding: 36, display: "grid", gap: 22 }}>
                 <div>
                   <p style={{ color: "#2563eb", fontWeight: 700, marginBottom: 10 }}>
-                    {selectedProduct.cat}
+                    {productList[selectedIndex].cat}
                   </p>
                   <h2 style={{ fontSize: 34, marginBottom: 18 }}>
-                    {selectedProduct.name}
+                    {productList[selectedIndex].name}
                   </h2>
                   <p style={{ color: "#475569", lineHeight: 1.8 }}>
-                    {selectedProduct.desc}
+                    {productList[selectedIndex].desc}
                   </p>
                 </div>
 
@@ -243,7 +319,7 @@ export default function ProductGrid() {
                   <div>
                     <h4 style={{ marginBottom: 10 }}>Key information</h4>
                     <ul style={{ color: "#334155", lineHeight: 1.8, paddingLeft: 20 }}>
-                      {selectedProduct.features.map((feature) => (
+                      {productList[selectedIndex].features.map((feature) => (
                         <li key={feature}>{feature}</li>
                       ))}
                     </ul>
@@ -258,7 +334,7 @@ export default function ProductGrid() {
                         gap: 14,
                       }}
                     >
-                      {Object.entries(selectedProduct.specs).map(([label, value]) => (
+                      {Object.entries(productList[selectedIndex].specs).map(([label, value]) => (
                         <div
                           key={label}
                           style={{
@@ -278,7 +354,7 @@ export default function ProductGrid() {
                 </div>
 
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                  <a href={selectedProduct.pdf} className="btn-outline" download>
+                  <a href={productList[selectedIndex].pdf} className="btn-outline" download>
                     Download brochure
                   </a>
                   <a href="/contact" className="btn-primary">

@@ -19,6 +19,26 @@ export const products = [
     pdf: "/pdfs/air-leak-tester.pdf",
   },
   {
+    id: "air-leak-tester-pro",
+    name: "Air Leak Tester Pro",
+    cat: "Leak Tester",
+    desc: "Enhanced leak testing with higher precision and extended range.",
+    image: "",
+    features: [
+      "Higher accuracy",
+      "Extended pressure range",
+      "Advanced data logging"
+    ],
+    specs: {
+      Method: "Differential Pressure",
+      Accuracy: "±0.05%",
+      Pressure: "Up to 2 MPa",
+      Application: "Automotive, EV, aerospace"
+    },
+    pdf: "/pdfs/air-leak-tester-pro.pdf",
+  },
+
+  {
     id: "process-gauges",
     name: "Process Gauges",
     cat: "Gauges",
