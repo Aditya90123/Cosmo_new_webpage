@@ -6,7 +6,7 @@ import ProductGrid from "../components/ProductGrid";
 import WorldMap from "../components/WorldMap";
 import AnnounceScroll from "../components/AnnounceScroll";
 import { motion } from "framer-motion";
-
+import ClientLogos from "../components/ClientLogos";
 export default function Home() {
   return (
     <>
@@ -40,6 +40,7 @@ export default function Home() {
 
       {/* WORLD MAP */}
       <WorldMap />
+      <ClientLogos />
 
       {/* ANNOUNCEMENT SCROLL */}
       <AnnounceScroll />
