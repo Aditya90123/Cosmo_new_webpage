@@ -1,11 +1,7 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const images = [
-  "/images/hero1.jpg",
-  "/images/hero2.jpg",
-  "/images/hero3.jpg",
-];
+
 
 export default function HeroSlider() {
   useEffect(() => {

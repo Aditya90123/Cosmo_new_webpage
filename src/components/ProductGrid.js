@@ -86,13 +86,13 @@ export default function ProductGrid() {
         }}
       >
         {featuredProducts.map((cardData, index) => {
-          const product = products.find((p) => p.id === cardData.id) || cardData;
+
 
           return (
             <motion.button
               key={cardData.id}
               type="button"
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => setSelectedIndex(products.findIndex(p => p.id === cardData.id))}
               initial={{ opacity: 0, y: 60, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ 
