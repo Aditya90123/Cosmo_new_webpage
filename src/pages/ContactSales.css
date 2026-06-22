@@ -1,0 +1,262 @@
+.contact-sales-container {
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  background: radial-gradient(circle at top left, #dbeafe 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #bfdbfe 0%, transparent 35%),
+    linear-gradient(135deg, #f8fbff, #eef6ff, #f9fcff);
+}
+
+/* Floating Glow */
+.glow-1 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: #60a5fa;
+  filter: blur(120px);
+  opacity: 0.25;
+  top: -150px;
+  left: -100px;
+  z-index: 1;
+}
+
+.glow-2 {
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: #38bdf8;
+  filter: blur(120px);
+  opacity: 0.18;
+  bottom: -150px;
+  right: -100px;
+  z-index: 1;
+}
+
+/* INDIA MAP */
+.india-map {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.india-map img {
+  width: min(85vw, 950px);
+  opacity: 0.08;
+  filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))
+    drop-shadow(0 0 80px rgba(59, 130, 246, 0.4));
+  animation: floatMap 10s ease-in-out infinite;
+}
+
+@keyframes floatMap {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.08);
+  }
+}
+
+/* GLASS CARD */
+.form-card {
+  position: relative;
+  z-index: 10;
+
+  width: 680px;
+  max-width: 90%;
+
+  padding: 50px;
+
+  border-radius: 36px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+
+  box-shadow: 0 25px 80px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.4);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  margin-bottom: 18px;
+}
+
+.form-card h1 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+  font-family: "Inter", sans-serif;
+}
+
+.subtitle {
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 35px;
+  font-family: "Inter", sans-serif;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.full {
+  grid-column: span 2;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  font-family: "Inter", sans-serif;
+}
+
+input,
+select,
+textarea {
+  padding: 16px 18px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.55);
+
+  backdrop-filter: blur(20px);
+
+  color: #0f172a;
+
+  transition: 0.3s;
+  font-family: "Inter", sans-serif;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64748b;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: white;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12),
+    0 10px 30px rgba(59, 130, 246, 0.12);
+}
+
+textarea {
+  min-height: 130px;
+  resize: none;
+}
+
+button {
+  width: 100%;
+  margin-top: 25px;
+
+  border: none;
+
+  padding: 18px;
+
+  border-radius: 20px;
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #2563eb, #06b6d4, #3b82f6);
+
+  background-size: 200% 200%;
+
+  transition: 0.4s;
+
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
+
+  font-family: "Inter", sans-serif;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 45px rgba(37, 99, 235, 0.45);
+}
+
+.status-message {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  font-family: "Inter", sans-serif;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 15px;
+  color: #64748b;
+  font-size: 13px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-card {
+    padding: 30px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: span 1;
+  }
+
+  .form-card h1 {
+    font-size: 36px;
+  }
+
+  .india-map img {
+    width: 130vw;
+  }
+}

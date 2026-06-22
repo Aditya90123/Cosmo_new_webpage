@@ -90,6 +90,12 @@ export default function Navbar() {
           <a href="/#solutions" onClick={closeMenu}>
             Solutions
           </a>
+          <Link to="/all-products" onClick={closeMenu}>
+            Explore More Products
+          </Link>
+          <Link to="/history" onClick={closeMenu}>
+            Our History
+          </Link>
           <Link to="/contact" onClick={closeMenu}>
             Contact Sales
           </Link>

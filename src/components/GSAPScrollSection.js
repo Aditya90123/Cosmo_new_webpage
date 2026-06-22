@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./GSAPScrollSection.css";
@@ -11,6 +11,30 @@ export default function GSAPScrollSection() {
   const firstTextRef = useRef(null);
   const secondTextRef = useRef(null);
   const imageRef = useRef(null);
+
+  // Image list for hover animation – adjust filenames as needed
+  const images = [
+    "/images/air leak testers/AF-R221.png",
+    "/images/air leak testers/LS-1866.png",
+    "/images/air leak testers/LS-R700.png",
+    "/images/air leak testers/LS-R902.png",
+  ];
+  const [currentImgIdx, setCurrentImgIdx] = useState(0);
+  const hoverIntervalRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    // Start cycling through images every 400ms
+    hoverIntervalRef.current = setInterval(() => {
+      setCurrentImgIdx((prev) => (prev + 1) % images.length);
+    }, 400);
+  };
+
+  const handleMouseLeave = () => {
+    // Stop cycling and reset to first image
+    clearInterval(hoverIntervalRef.current);
+    hoverIntervalRef.current = null;
+    setCurrentImgIdx(0);
+  };
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -59,6 +83,7 @@ export default function GSAPScrollSection() {
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      clearInterval(hoverIntervalRef.current);
     };
   }, []);
 
@@ -71,8 +96,13 @@ export default function GSAPScrollSection() {
             <span ref={secondTextRef} className="second-text">TESTER</span>
           </h1>
         </div>
-        <div ref={imageRef} className="image-container">
-          <img src="/images/scroll image.png" alt="Air Leak Tester" />
+        <div
+          ref={imageRef}
+          className="image-container"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <img src={images[currentImgIdx]} alt="Air Leak Tester" />
         </div>
       </div>
     </section>

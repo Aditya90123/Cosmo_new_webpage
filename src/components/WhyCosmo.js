@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import "./WhyCosmo.css";
 
 const points = [
   { text: "Japanese Engineering Precision", icon: "⚙️" },
@@ -9,67 +10,30 @@ const points = [
 
 export default function WhyCosmo() {
   return (
-    <section
-      style={{
-        background: "#ffffff",
-        color: "#000000",
-        padding: "120px 32px",
-      }}
-    >
-      <div style={{ maxWidth: 1400, margin: "auto" }}>
+    <section className="why-cosmo-section">
+      <div className="why-cosmo-container">
         <motion.h2
+          className="why-cosmo-title"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          style={{
-            fontSize: "2.5rem",
-            fontWeight: "600",
-            color: "#000000",
-            marginBottom: "64px",
-            letterSpacing: "-0.02em",
-            textAlign: "center"
-          }}
         >
           Why COSMO
         </motion.h2>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
-            gap: 32,
-          }}
-        >
+        <div className="why-cosmo-grid">
           {points.map((p, i) => (
             <motion.div
               key={i}
+              className="glass-feature-card"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              style={{
-                background: "#f5f5f7",
-                padding: "48px",
-                borderRadius: "18px",
-                transition: "all 0.3s ease",
-              }}
             >
-              <div style={{
-                fontSize: "2.5rem",
-                marginBottom: "20px",
-              }}>
-                {p.icon}
-              </div>
-              <p style={{
-                fontSize: "1.15rem",
-                fontWeight: "600",
-                color: "#000000",
-                lineHeight: "1.5",
-                letterSpacing: "-0.01em"
-              }}>
-                {p.text}
-              </p>
+              <div className="feature-icon">{p.icon}</div>
+              <p className="feature-text">{p.text}</p>
             </motion.div>
           ))}
         </div>

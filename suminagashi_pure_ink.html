@@ -1,0 +1,238 @@
+
+<div id="wrap" style="position:relative;width:100%;height:560px;overflow:hidden;background:#EEE9E0;border-radius:10px;cursor:crosshair;">
+<canvas id="sumi" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+
+<!-- Minimal floating text — no cards, no glass boxes -->
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2;">
+
+  <!-- Japanese text left side like reference -->
+  <div style="position:absolute;left:28px;top:18px;display:flex;flex-direction:column;align-items:center;gap:0;">
+    <span style="font-size:30px;font-weight:300;color:rgba(20,18,16,0.82);line-height:1.05;letter-spacing:0.05em;font-family:serif;">墨</span>
+    <span style="font-size:30px;font-weight:300;color:rgba(20,18,16,0.82);line-height:1.05;letter-spacing:0.05em;font-family:serif;">流</span>
+    <span style="font-size:30px;font-weight:300;color:rgba(20,18,16,0.82);line-height:1.05;letter-spacing:0.05em;font-family:serif;">し</span>
+    <span style="display:block;width:1px;height:48px;background:rgba(20,18,16,0.2);margin:14px 0;"></span>
+    <span style="font-size:8.5px;font-weight:400;color:rgba(20,18,16,0.38);letter-spacing:0.22em;writing-mode:vertical-rl;text-orientation:mixed;text-transform:uppercase;font-family:-apple-system,sans-serif;">Suminagashi — Ink Dissolution</span>
+  </div>
+
+  <!-- Section label top right -->
+  <div style="position:absolute;top:22px;right:28px;text-align:right;">
+    <span style="font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(20,18,16,0.32);font-family:-apple-system,sans-serif;font-weight:500;">Our History</span>
+  </div>
+
+  <!-- Central headline — barely there, ink-like -->
+  <div style="position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;">
+    <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(20,18,16,0.28);font-family:-apple-system,sans-serif;font-weight:500;margin-bottom:10px;">Est. 2010</div>
+    <div style="font-size:28px;font-weight:200;color:rgba(12,10,8,0.72);letter-spacing:0.04em;font-family:serif;font-style:italic;">A Legacy in Motion</div>
+  </div>
+
+  <!-- Crosshair cursor hint -->
+  <div id="cursor-ring" style="position:absolute;width:48px;height:48px;border-radius:50%;border:1px solid rgba(20,18,16,0.18);transform:translate(-50%,-50%);transition:opacity .3s;opacity:0;pointer-events:none;"></div>
+</div>
+</div>
+
+<script>
+(function(){
+const canvas = document.getElementById('sumi');
+const wrap   = document.getElementById('wrap');
+const ring   = document.getElementById('cursor-ring');
+const ctx    = canvas.getContext('2d');
+let W, H, t = 0;
+let mx=-9999, my=-9999, pvx=0, pvy=0, vx=0, vy=0;
+let pmx=-9999, pmy=-9999;
+
+function resize(){
+  W = canvas.width  = wrap.offsetWidth;
+  H = canvas.height = wrap.offsetHeight;
+}
+
+// ── Ink cloud definitions ──────────────────────────────────────────
+// Faithful to reference: big cobalt blue, smoke gray, near-black, rose accent, pale blue
+const clouds = [
+  // LARGE cobalt blue — dominant center-left (like reference)
+  { bx:0.40, by:0.40, brx:0.30, bry:0.25, brot:-0.25,
+    cols:[[18,55,135],[10,38,112],[6,24,92]], alphas:[0.60,0.48,0.38], scale:[1,.72,.45] },
+
+  // Smoke gray — blooms below-left of blue
+  { bx:0.32, by:0.60, brx:0.22, bry:0.15, brot:0.3,
+    cols:[[55,52,48],[35,33,30],[18,17,15]], alphas:[0.42,0.52,0.58], scale:[1,.65,.35] },
+
+  // Near-black ink — upper right tendril mass
+  { bx:0.72, by:0.20, brx:0.14, bry:0.10, brot:0.8,
+    cols:[[22,20,18],[12,10,9]], alphas:[0.48,0.62], scale:[1,.5] },
+
+  // Rose/salmon — top right corner, soft
+  { bx:0.88, by:0.26, brx:0.14, bry:0.10, brot:-0.4,
+    cols:[[185,100,82],[160,75,60]], alphas:[0.30,0.36], scale:[1,.55] },
+
+  // Pale blue wisp — right mid
+  { bx:0.80, by:0.58, brx:0.13, bry:0.08, brot:0.15,
+    cols:[[110,148,200],[85,125,180]], alphas:[0.22,0.28], scale:[1,.5] },
+
+  // Gray smoke upper left
+  { bx:0.16, by:0.30, brx:0.17, bry:0.11, brot:-0.1,
+    cols:[[70,67,63],[45,42,39],[22,20,18]], alphas:[0.32,0.42,0.50], scale:[1,.6,.3] },
+
+  // Dark bottom tendril
+  { bx:0.22, by:0.80, brx:0.12, bry:0.07, brot:0.5,
+    cols:[[20,18,16],[10,8,7]], alphas:[0.38,0.55], scale:[1,.45] },
+
+  // Secondary blue haze
+  { bx:0.58, by:0.50, brx:0.16, bry:0.11, brot:-0.05,
+    cols:[[45,88,160],[28,68,140]], alphas:[0.20,0.26], scale:[1,.55] },
+];
+
+// Live animated offsets per cloud
+const st = clouds.map((c,i)=>({
+  ox:0, oy:0, tx:0, ty:0,
+  ph: i*1.37,
+  dx:(Math.random()-.5)*.016,
+  dy:(Math.random()-.5)*.012,
+  br: 0.035+Math.random()*.035,
+}));
+
+function drawCloud(c, s, t){
+  const cx = c.bx*W + s.ox;
+  const cy = c.by*H + s.oy;
+  const breathe = 1 + Math.sin(t*.009+s.ph)*s.br;
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(c.brot + Math.sin(t*.0025+s.ph)*.055);
+
+  c.cols.forEach((col,i)=>{
+    const rx = c.brx*W*c.scale[i]*breathe;
+    const ry = c.bry*H*c.scale[i]*breathe;
+    const [r,g,b] = col;
+    const a = c.alphas[i];
+    const rmax = Math.max(rx,ry);
+    const grad = ctx.createRadialGradient(0,0,0,0,0,rmax);
+    grad.addColorStop(0,   `rgba(${r},${g},${b},${a})`);
+    grad.addColorStop(0.28,`rgba(${r},${g},${b},${a*.72})`);
+    grad.addColorStop(0.60,`rgba(${r},${g},${b},${a*.28})`);
+    grad.addColorStop(0.85,`rgba(${r},${g},${b},${a*.06})`);
+    grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+    ctx.save();
+    ctx.scale(1, ry/rmax);
+    ctx.beginPath();
+    ctx.ellipse(0,0,rx,rx,0,0,Math.PI*2);
+    ctx.fillStyle=grad;
+    ctx.fill();
+    ctx.restore();
+  });
+  ctx.restore();
+}
+
+function drawTendril(x1,y1,x2,y2,cpox,cpoy,col,a,w,t,ph){
+  const [r,g,b]=col;
+  const wobble = Math.sin(t*.006+ph)*12;
+  const grad=ctx.createLinearGradient(x1,y1,x2,y2);
+  grad.addColorStop(0,`rgba(${r},${g},${b},${a})`);
+  grad.addColorStop(.4,`rgba(${r},${g},${b},${a*.55})`);
+  grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.quadraticCurveTo(
+    (x1+x2)/2+cpox+wobble,
+    (y1+y2)/2+cpoy+wobble*.6,
+    x2,y2
+  );
+  ctx.strokeStyle=grad;
+  ctx.lineWidth=w;
+  ctx.lineCap='round';
+  ctx.stroke();
+}
+
+function frame(){
+  t++;
+
+  // Mouse velocity
+  if(mx>0){ vx+=(mx-pmx)*.006; vy+=(my-pmy)*.006; }
+  vx*=.88; vy*=.88;
+  pmx=mx; pmy=my;
+
+  // Update cloud states
+  st.forEach((s,i)=>{
+    const c=clouds[i];
+    const ndx=Math.sin(t*.0014+s.ph*.8)*14+s.dx*(t%700<350?1:-1)*10;
+    const ndy=Math.cos(t*.0011+s.ph*.6)*9 +s.dy*(t%550<275?1:-1)*7;
+    let mdx=0,mdy=0;
+    if(mx>0){
+      const ccx=c.bx*W+s.ox, ccy=c.by*H+s.oy;
+      const dx=mx-ccx, dy=my-ccy;
+      const dist=Math.sqrt(dx*dx+dy*dy)||1;
+      const inf=Math.max(0,1-dist/(W*.62));
+      const pow=inf*inf*28;
+      mdx=(dx/dist)*pow*.45+vx*20*inf;
+      mdy=(dy/dist)*pow*.38+vy*16*inf;
+    }
+    s.tx=ndx+mdx; s.ty=ndy+mdy;
+    s.ox+=(s.tx-s.ox)*.038;
+    s.oy+=(s.ty-s.oy)*.038;
+  });
+
+  // ── Render ──
+  ctx.clearRect(0,0,W,H);
+
+  // Paper base — warm off-white with very faint warm vignette
+  ctx.fillStyle='#EEE9E0';
+  ctx.fillRect(0,0,W,H);
+  const vig=ctx.createRadialGradient(W*.5,H*.42,0,W*.5,H*.42,W*.72);
+  vig.addColorStop(0,'rgba(238,233,224,0)');
+  vig.addColorStop(1,'rgba(205,198,188,0.22)');
+  ctx.fillStyle=vig;
+  ctx.fillRect(0,0,W,H);
+
+  // All ink uses multiply so overlaps deepen like real pigment
+  ctx.globalCompositeOperation='multiply';
+
+  // Draw clouds — back to front order
+  [5,6,4,3,1,7,0,2].forEach(i=>drawCloud(clouds[i],st[i],t));
+
+  // Tendrils connecting masses
+  const s0=st[0],s1=st[1],s2=st[2],s5=st[5],s7=st[7];
+  // Blue → dark upper
+  drawTendril(
+    clouds[0].bx*W+s0.ox+W*.06, clouds[0].by*H+s0.oy-H*.08,
+    clouds[2].bx*W+s2.ox-W*.05, clouds[2].by*H+s2.oy+H*.05,
+    W*.04,-H*.06,[15,13,12],0.52,16+Math.sin(t*.008)*3, t,0
+  );
+  // Gray → blue
+  drawTendril(
+    clouds[5].bx*W+s5.ox+W*.07, clouds[5].by*H+s5.oy+H*.02,
+    clouds[0].bx*W+s0.ox-W*.09, clouds[0].by*H+s0.oy+H*.06,
+    -W*.05,H*.04,[48,45,42],0.40,20+Math.sin(t*.007)*4, t,1.2
+  );
+  // Blue → smoke below
+  drawTendril(
+    clouds[0].bx*W+s0.ox+W*.04, clouds[0].by*H+s0.oy+H*.1,
+    clouds[1].bx*W+s1.ox-W*.05, clouds[1].by*H+s1.oy-H*.03,
+    W*.02,H*.06,[16,48,118],0.38,24+Math.sin(t*.009)*5, t,2.1
+  );
+  // Secondary haze → blue
+  drawTendril(
+    clouds[7].bx*W+s7.ox-W*.06, clouds[7].by*H+s7.oy-H*.04,
+    clouds[0].bx*W+s0.ox+W*.08, clouds[0].by*H+s0.oy+H*.02,
+    W*.03,-H*.05,[30,72,145],0.25,14+Math.sin(t*.01)*3, t,3.4
+  );
+
+  ctx.globalCompositeOperation='source-over';
+  requestAnimationFrame(frame);
+}
+
+wrap.addEventListener('mousemove',e=>{
+  const r=wrap.getBoundingClientRect();
+  mx=(e.clientX-r.left)*(W/r.width);
+  my=(e.clientY-r.top)*(H/r.height);
+  ring.style.left=e.clientX-r.left+'px';
+  ring.style.top=e.clientY-r.top+'px';
+  ring.style.opacity='1';
+});
+wrap.addEventListener('mouseleave',()=>{
+  mx=-9999; my=-9999; vx=0; vy=0;
+  ring.style.opacity='0';
+});
+
+window.addEventListener('resize',resize);
+resize();
+frame();
+})();
+</script>

@@ -1,0 +1,153 @@
+.why-cosmo-section {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 120px 32px;
+  overflow: hidden;
+}
+
+/* Background decorative elements */
+.why-cosmo-section::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -15%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.why-cosmo-section::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.why-cosmo-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.why-cosmo-title {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.why-cosmo-title h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.why-cosmo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+/* Glassmorphism Feature Card */
+.glass-feature-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 48px;
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shiny hover effect */
+.glass-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  transform: skewX(-25deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.glass-feature-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 28px 56px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(139, 92, 246, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.glass-feature-card:hover::before {
+  left: 200%;
+}
+
+.feature-icon {
+  font-size: 3rem;
+  margin-bottom: 24px;
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.feature-text {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .why-cosmo-section {
+    padding: 80px 20px;
+  }
+
+  .why-cosmo-title h2 {
+    font-size: 2rem;
+  }
+
+  .why-cosmo-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .glass-feature-card {
+    padding: 36px 32px;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+  }
+
+  .feature-text {
+    font-size: 1rem;
+  }
+}

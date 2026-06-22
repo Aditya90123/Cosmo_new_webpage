@@ -140,17 +140,6 @@ a {
   }
 }
 
-@keyframes siri-orb {
-  0%, 100% {
-    transform: scale(1) translateY(0);
-    box-shadow: inset 0 0 18px rgba(255,255,255,0.4), 0 0 28px rgba(56, 189, 248, 0.22);
-  }
-  50% {
-    transform: scale(0.98) translateY(-1px);
-    box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 0 34px rgba(56, 189, 248, 0.28);
-  }
-}
-
 @keyframes rotate-blink {
   0% {
     transform: rotate(0deg);
@@ -219,6 +208,19 @@ a {
     opacity: 1;
   }
 }
+
+@keyframes siri-orb {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    box-shadow: inset 0 0 18px rgba(255,255,255,0.4), 0 0 28px rgba(56, 189, 248, 0.22);
+  }
+  50% {
+    transform: scale(0.98) translateY(-1px);
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 0 34px rgba(56, 189, 248, 0.28);
+  }
+}
+
+
 
 .site-header__cta {
   display: inline-flex;

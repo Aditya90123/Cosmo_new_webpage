@@ -20,3 +20,5 @@ export default function AnimatedIcon({ path }) {
     </motion.svg>
   );
 }
+
+
