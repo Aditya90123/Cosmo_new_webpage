@@ -72,6 +72,16 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           onClick={handleMenuToggle}
         >
+          <svg className="site-header__menu-rotating-text" viewBox="0 0 100 100">
+            <defs>
+              <path id="circlePath" d="M 50,50 m -40,0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+            </defs>
+            <text fill="#000000" fontSize="8" fontWeight="600" letterSpacing="2">
+              <textPath href="#circlePath" className="rotating-text-path">
+                CLICK HERE • CLICK HERE • CLICK HERE •
+              </textPath>
+            </text>
+          </svg>
           <img 
             src="/images/HAMBURGER.png" 
             alt="Menu" 

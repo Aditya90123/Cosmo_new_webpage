@@ -31,185 +31,172 @@ const historyData = [
 export default function History() {
   const wrapRef = useRef(null);
   const canvasRef = useRef(null);
-  const ringRef = useRef(null);
+  const cursorRef = useRef(null);
   const textRef = useRef(null);
   const timelineRef = useRef(null);
 
   useEffect(() => {
-    // ---- Canvas Animation Logic ----
+    // ---- Suminagashi Particle Animation Logic ----
     const wrap = wrapRef.current;
     const canvas = canvasRef.current;
-    const ring = ringRef.current;
+    const cursor = cursorRef.current;
     const text = textRef.current;
-    if (!wrap || !canvas || !ring || !text) return;
+    const timeline = timelineRef.current;
+    if (!wrap || !canvas || !cursor || !text || !timeline) return;
 
     const ctx = canvas.getContext('2d');
-    let W, H, t = 0;
-    let mx = -9999, my = -9999, vx = 0, vy = 0;
-    let pmx = -9999, pmy = -9999;
+    let W, H, mouse = { x: -999, y: -999, active: false };
+    const PARTICLE_COUNT = 200;
+    const particles = [];
     let animationFrameId;
+
+    const PALETTE = [
+      [0,0,0],
+      [30,30,30],
+      [0,50,100],
+      [0,80,150],
+      [0,100,200],
+      [50,130,200]
+    ];
 
     function resize() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
     }
 
-    const clouds = [
-      { bx:0.40, by:0.40, brx:0.30, bry:0.25, brot:-0.25,
-        cols:[[18,55,135],[10,38,112],[6,24,92]], alphas:[0.60,0.48,0.38], scale:[1,.72,.45] },
-      { bx:0.32, by:0.60, brx:0.22, bry:0.15, brot:0.3,
-        cols:[[55,52,48],[35,33,30],[18,17,15]], alphas:[0.42,0.52,0.58], scale:[1,.65,.35] },
-      { bx:0.72, by:0.20, brx:0.14, bry:0.10, brot:0.8,
-        cols:[[22,20,18],[12,10,9]], alphas:[0.48,0.62], scale:[1,.5] },
-      { bx:0.88, by:0.26, brx:0.14, bry:0.10, brot:-0.4,
-        cols:[[185,100,82],[160,75,60]], alphas:[0.30,0.36], scale:[1,.55] },
-      { bx:0.80, by:0.58, brx:0.13, bry:0.08, brot:0.15,
-        cols:[[110,148,200],[85,125,180]], alphas:[0.22,0.28], scale:[1,.5] },
-      { bx:0.16, by:0.30, brx:0.17, bry:0.11, brot:-0.1,
-        cols:[[70,67,63],[45,42,39],[22,20,18]], alphas:[0.32,0.42,0.50], scale:[1,.6,.3] },
-      { bx:0.22, by:0.80, brx:0.12, bry:0.07, brot:0.5,
-        cols:[[20,18,16],[10,8,7]], alphas:[0.38,0.55], scale:[1,.45] },
-      { bx:0.58, by:0.50, brx:0.16, bry:0.11, brot:-0.05,
-        cols:[[45,88,160],[28,68,140]], alphas:[0.20,0.26], scale:[1,.55] },
-    ];
-
-    const st = clouds.map((c,i)=>({
-      ox:0, oy:0, tx:0, ty:0,
-      ph: i*1.37,
-      dx:(Math.random()-.5)*.016,
-      dy:(Math.random()-.5)*.012,
-      br: 0.035+Math.random()*.035,
-    }));
-
-    function drawCloud(c, s, t){
-      const cx = c.bx*W + s.ox;
-      const cy = c.by*H + s.oy;
-      const breathe = 1 + Math.sin(t*.009+s.ph)*s.br;
-      ctx.save();
-      ctx.translate(cx,cy);
-      ctx.rotate(c.brot + Math.sin(t*.0025+s.ph)*.055);
-
-      c.cols.forEach((col,i)=>{
-        const rx = c.brx*W*c.scale[i]*breathe;
-        const ry = c.bry*H*c.scale[i]*breathe;
-        const [r,g,b] = col;
-        const a = c.alphas[i];
-        const rmax = Math.max(rx,ry);
-        const grad = ctx.createRadialGradient(0,0,0,0,0,rmax);
-        grad.addColorStop(0,   `rgba(${r},${g},${b},${a})`);
-        grad.addColorStop(0.28,`rgba(${r},${g},${b},${a*.72})`);
-        grad.addColorStop(0.60,`rgba(${r},${g},${b},${a*.28})`);
-        grad.addColorStop(0.85,`rgba(${r},${g},${b},${a*.06})`);
-        grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
-        ctx.save();
-        ctx.scale(1, ry/rmax);
-        ctx.beginPath();
-        ctx.ellipse(0,0,rx,rx,0,0,Math.PI*2);
-        ctx.fillStyle=grad;
-        ctx.fill();
-        ctx.restore();
-      });
-      ctx.restore();
-    }
-
-    function drawTendril(x1,y1,x2,y2,cpox,cpoy,col,a,w,t,ph){
-      const [r,g,b]=col;
-      const wobble = Math.sin(t*.006+ph)*12;
-      const grad=ctx.createLinearGradient(x1,y1,x2,y2);
-      grad.addColorStop(0,`rgba(${r},${g},${b},${a})`);
-      grad.addColorStop(.4,`rgba(${r},${g},${b},${a*.55})`);
-      grad.addColorStop(1,`rgba(${r},${g},${b},0)`);
-      ctx.beginPath();
-      ctx.moveTo(x1,y1);
-      ctx.quadraticCurveTo(
-        (x1+x2)/2+cpox+wobble,
-        (y1+y2)/2+cpoy+wobble*.6,
-        x2,y2
-      );
-      ctx.strokeStyle=grad;
-      ctx.lineWidth=w;
-      ctx.lineCap='round';
-      ctx.stroke();
-    }
-
-    function frame(){
-      t++;
-      if(mx>0){ vx+=(mx-pmx)*.006; vy+=(my-pmy)*.006; }
-      vx*=.88; vy*=.88;
-      pmx=mx; pmy=my;
-
-      st.forEach((s,i)=>{
-        const c=clouds[i];
-        const ndx=Math.sin(t*.002+s.ph*.8)*35+s.dx*(t%700<350?1:-1)*25;
-        const ndy=Math.cos(t*.0015+s.ph*.6)*25 +s.dy*(t%550<275?1:-1)*20;
-        let mdx=0,mdy=0;
-        if(mx>0){
-          const ccx=c.bx*W+s.ox, ccy=c.by*H+s.oy;
-          const dx=mx-ccx, dy=my-ccy;
-          const dist=Math.sqrt(dx*dx+dy*dy)||1;
-          const inf=Math.max(0,1-dist/(W*.85));
-          const pow=inf*inf*150;
-          mdx=(dx/dist)*pow*1.5+vx*60*inf;
-          mdy=(dy/dist)*pow*1.2+vy*50*inf;
+    class Particle {
+      constructor() { this.reset(true); }
+      reset(init) {
+        this.x = Math.random() * W;
+        this.y = init ? Math.random() * H : -10;
+        this.vx = (Math.random() - .5) * .4;
+        this.vy = (Math.random() - .5) * .4;
+        this.r = 1 + Math.random() * 2.2;
+        this.col = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+        this.alpha = .15 + Math.random() * .5;
+        this.baseAlpha = this.alpha;
+        this.trail = [];
+        this.maxTrail = 8 + Math.floor(Math.random() * 10);
+      }
+      update() {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const RADIUS = 250;
+        if (mouse.active && dist < RADIUS) {
+          const force = (1 - dist / RADIUS) * 4.0;
+          const angle = Math.atan2(dy, dx);
+          this.vx -= Math.cos(angle) * force * .12;
+          this.vy -= Math.sin(angle) * force * .12;
+          this.alpha = Math.min(1, this.baseAlpha + force * .6);
+        } else {
+          this.alpha += (this.baseAlpha - this.alpha) * .04;
         }
-        s.tx=ndx+mdx; s.ty=ndy+mdy;
-        s.ox+=(s.tx-s.ox)*.045;
-        s.oy+=(s.ty-s.oy)*.045;
-      });
-
-      ctx.clearRect(0,0,W,H);
-      ctx.fillStyle='#EEE9E0';
-      ctx.fillRect(0,0,W,H);
-
-      ctx.globalCompositeOperation='multiply';
-      [5,6,4,3,1,7,0,2].forEach(i=>drawCloud(clouds[i],st[i],t));
-
-      const s0=st[0],s1=st[1],s2=st[2],s5=st[5],s7=st[7];
-      drawTendril(
-        clouds[0].bx*W+s0.ox+W*.06, clouds[0].by*H+s0.oy-H*.08,
-        clouds[2].bx*W+s2.ox-W*.05, clouds[2].by*H+s2.oy+H*.05,
-        W*.04,-H*.06,[15,13,12],0.52,16+Math.sin(t*.008)*3, t,0
-      );
-      drawTendril(
-        clouds[5].bx*W+s5.ox+W*.07, clouds[5].by*H+s5.oy+H*.02,
-        clouds[0].bx*W+s0.ox-W*.09, clouds[0].by*H+s0.oy+H*.06,
-        -W*.05,H*.04,[48,45,42],0.40,20+Math.sin(t*.007)*4, t,1.2
-      );
-      drawTendril(
-        clouds[0].bx*W+s0.ox+W*.04, clouds[0].by*H+s0.oy+H*.1,
-        clouds[1].bx*W+s1.ox-W*.05, clouds[1].by*H+s1.oy-H*.03,
-        W*.02,H*.06,[16,48,118],0.38,24+Math.sin(t*.009)*5, t,2.1
-      );
-      drawTendril(
-        clouds[7].bx*W+s7.ox-W*.06, clouds[7].by*H+s7.oy-H*.04,
-        clouds[0].bx*W+s0.ox+W*.08, clouds[0].by*H+s0.oy+H*.02,
-        W*.03,-H*.05,[30,72,145],0.25,14+Math.sin(t*.01)*3, t,3.4
-      );
-
-      ctx.globalCompositeOperation='source-over';
-      animationFrameId = requestAnimationFrame(frame);
+        this.vx *= .95; this.vy *= .95;
+        this.vx += (Math.random() - .5) * .02;
+        this.vy += (Math.random() - .5) * .02;
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > this.maxTrail) this.trail.shift();
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < -20 || this.x > W + 20 || this.y < -20 || this.y > H + 20) this.reset(false);
+      }
+      draw() {
+        const [r, g, b] = this.col;
+        if (this.trail.length > 1) {
+          for (let i = 1; i < this.trail.length; i++) {
+            const t = i / this.trail.length;
+            ctx.beginPath();
+            ctx.moveTo(this.trail[i-1].x, this.trail[i-1].y);
+            ctx.lineTo(this.trail[i].x, this.trail[i].y);
+            ctx.strokeStyle = `rgba(${r},${g},${b},${t * this.alpha * .4})`;
+            ctx.lineWidth = this.r * t;
+            ctx.stroke();
+          }
+        }
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${this.alpha})`;
+        ctx.fill();
+      }
     }
+
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i], p2 = particles[j];
+          const dx = p1.x - p2.x, dy = p1.y - p2.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 90) {
+            const op = (1 - d / 90) * .08;
+            const [r, g, b] = p1.col;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(${r},${g},${b},${op})`;
+            ctx.lineWidth = .5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawMouseGlow() {
+      if (!mouse.active) return;
+      const grad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 150);
+      grad.addColorStop(0, 'rgba(0,100,200,0.1)');
+      grad.addColorStop(1, 'rgba(0,100,200,0)');
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, 150, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    }
+
+    function loop() {
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillRect(0, 0, W, H);
+      drawMouseGlow();
+      drawConnections();
+      particles.forEach(p => { p.update(); p.draw(); });
+      animationFrameId = requestAnimationFrame(loop);
+    }
+
+    function init() {
+      resize();
+      for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+      loop();
+    }
+
+    // Attach to window so we can hover through the scroll overlay
+    window.addEventListener('resize', resize);
+
+    init();
 
     const handleMouseMove = (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      ring.style.left = e.clientX + 'px';
-      ring.style.top = e.clientY + 'px';
-      ring.style.opacity = '1';
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+      cursor.style.left = mouse.x + 'px';
+      cursor.style.top = mouse.y + 'px';
+      cursor.style.opacity = '1';
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursor.style.background = 'rgba(100,100,120,0.8)';
     };
 
     const handleMouseLeave = () => {
-      mx = -9999; my = -9999; vx = 0; vy = 0;
-      ring.style.opacity = '0';
+      mouse.active = false;
+      mouse.x = -999; mouse.y = -999;
+      cursor.style.opacity = '0';
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      cursor.style.background = 'rgba(20,18,16,0.9)';
     };
 
     // Attach to window so we can hover through the scroll overlay
     window.addEventListener('mousemove', handleMouseMove);
     document.body.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', resize);
-
-    resize();
-    frame();
 
     // ---- GSAP Scroll Animations ----
     const pageContainer = document.querySelector('.history-page');
@@ -297,7 +284,7 @@ export default function History() {
             style={{
             position: "absolute",
             left: "40px",
-            top: "40px",
+            top: "100px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -313,11 +300,28 @@ export default function History() {
           </div>
 
           {/* Section label */}
-          <div style={{ position: "absolute", top: "40px", right: "40px", textAlign: "right" }}>
+          <div style={{ position: "absolute", top: "100px", right: "40px", textAlign: "right" }}>
             <span style={{ fontSize: "14px", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(20,18,16,0.5)", fontFamily: "-apple-system,sans-serif", fontWeight: 500 }}>
               Our History
             </span>
           </div>
+
+          {/* Custom cursor */}
+          <div 
+            ref={cursorRef} 
+            id="cursor" 
+            style={{
+              position: "absolute",
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              background: "rgba(20,18,16,0.9)",
+              transform: "translate(-50%,-50%)",
+              transition: "width .12s, height .12s, background .12s",
+              opacity: 0,
+              pointerEvents: "none"
+            }} 
+          />
 
           {/* Central headline */}
           <div style={{
@@ -336,22 +340,7 @@ export default function History() {
             </div>
           </div>
 
-          {/* Crosshair cursor hint */}
-          <div 
-            ref={ringRef} 
-            id="cursor-ring" 
-            style={{
-              position: "absolute",
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              border: "1px solid rgba(20,18,16,0.18)",
-              transform: "translate(-50%,-50%)",
-              transition: "opacity .3s",
-              opacity: 0,
-              pointerEvents: "none"
-            }} 
-          />
+
         </div>
       </div>
 

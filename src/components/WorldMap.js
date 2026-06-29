@@ -3,244 +3,78 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const worldLocations = [
   {
+    id: "manesar",
+    name: "Head Office - Manesar",
+    city: "Gurugram, Haryana",
+    address: "Plot No. 262, Sector 8, IMT Manesar, Gurugram, Haryana - 122 052",
+    phone: "+91-(0)124-421-0946",
+    email: "info@cosmoinstrumentsindia.com",
+    managerEmail: "headoffice@cosmoinstrumentsindia.com",
+    managerName: "Head Office",
+    googleMapsLink: "https://maps.google.com/?q=Manesar+Gurugram+Haryana+India",
+    x: 38,
+    y: 22,
+    country: "India"
+  },
+  {
+    id: "pune",
+    name: "Pune - Chakan Office",
+    city: "Pune, Maharashtra",
+    address: "Plot No. PAP-32, Phase III Chakan Industrial Area, Nighoje, Pune – 410 501",
+    phone: "+91-(0)206-933-2345",
+    email: "pune@cosmoinstrumentsindia.com",
+    managerEmail: "pune.manager@cosmoinstrumentsindia.com",
+    managerName: "Pune Branch Manager",
+    googleMapsLink: "https://maps.google.com/?q=Chakan+Pune+Maharashtra+India",
+    x: 26,
+    y: 44,
+    country: "India"
+  },
+  {
     id: "chennai",
     name: "Chennai Office",
-    city: "Chennai",
-    address: "COSMO India Pvt Ltd, Ambattur, Chennai",
-    phone: "+91 44 1234 5678",
-    email: "chennai@cosmo.com",
-    managerEmail: "manager.chennai@cosmo.com",
-    managerName: "Priya Sharma",
-    googleMapsLink: "https://maps.google.com/?q=Chennai+India",
-    x: 73,
-    y: 58,
-    country: "India"
-  },
-  {
-    id: "coimbatore",
-    name: "Coimbatore Office",
-    city: "Coimbatore",
-    address: "COSMO India Pvt Ltd, Peelamedu, Coimbatore",
-    phone: "+91 422 1234 5678",
-    email: "coimbatore@cosmo.com",
-    managerEmail: "manager.coimbatore@cosmo.com",
-    managerName: "Rajesh Kumar",
-    googleMapsLink: "https://maps.google.com/?q=Coimbatore+India",
-    x: 69,
+    city: "Chennai, Tamil Nadu",
+    address: "61A, Sri Ganesh Street, Vanagaram-Ambattur Road, Ambattur Ind. Estate, Chennai 600 058",
+    phone: "+91-(0)999-436-4454",
+    email: "chennai@cosmoinstrumentsindia.com",
+    managerEmail: "chennai.manager@cosmoinstrumentsindia.com",
+    managerName: "Chennai Branch Manager",
+    googleMapsLink: "https://maps.google.com/?q=Ambattur+Chennai+Tamil+Nadu+India",
+    x: 31,
     y: 57,
     country: "India"
   },
   {
-    id: "pune",
-    name: "Pune Office",
-    city: "Pune",
-    address: "COSMO India Pvt Ltd, Hinjewadi, Pune",
-    phone: "+91 20 1234 5678",
-    email: "pune@cosmo.com",
-    managerEmail: "manager.pune@cosmo.com",
-    managerName: "Sneha Deshpande",
-    googleMapsLink: "https://maps.google.com/?q=Pune+India",
-    x: 67,
-    y: 52,
+    id: "bengaluru",
+    name: "South Zone Regional Office",
+    city: "Bengaluru, Karnataka",
+    address: "No.90, M.K.S Layout, Avalahalli-Anjanapura Post, Bengaluru-560062",
+    phone: "+91-(0)966-338-4423",
+    email: "bengaluru@cosmoinstrumentsindia.com",
+    managerEmail: "bengaluru.manager@cosmoinstrumentsindia.com",
+    managerName: "Bengaluru Branch Manager",
+    googleMapsLink: "https://maps.google.com/?q=Avalahalli+Bengaluru+Karnataka+India",
+    x: 35,
+    y: 74,
     country: "India"
   },
   {
-    id: "manesar",
-    name: "Manesar Office",
-    city: "Manesar",
-    address: "COSMO India Pvt Ltd, IMT Manesar, Haryana",
-    phone: "+91 124 1234 5678",
-    email: "manesar@cosmo.com",
-    managerEmail: "manager.manesar@cosmo.com",
-    managerName: "Rohit Sharma",
-    googleMapsLink: "https://maps.google.com/?q=Manesar+Haryana+India",
-    x: 68,
-    y: 35,
-    country: "India"
-  },
-  {
-    id: "gujarat",
+    id: "ahmedabad",
     name: "Gujarat Office",
-    city: "Gujarat",
-    address: "COSMO India Pvt Ltd, Sanand, Gujarat",
+    city: "Ahmedabad, Gujarat",
+    address: "Shop# 602, C-1, 6th Floor, Shreeji Plaza, S.P Ring Road, Nava Naroda, Ahmedabad 382 330",
     phone: "+91 79 1234 5678",
-    email: "gujarat@cosmo.com",
-    managerEmail: "manager.gujarat@cosmo.com",
-    managerName: "Amit Patel",
-    googleMapsLink: "https://maps.google.com/?q=Sanand+Gujarat+India",
-    x: 63,
-    y: 46,
+    email: "ahmedabad@cosmoinstrumentsindia.com",
+    managerEmail: "ahmedabad.manager@cosmoinstrumentsindia.com",
+    managerName: "Ahmedabad Branch Manager",
+    googleMapsLink: "https://maps.google.com/?q=Nava+Naroda+Ahmedabad+Gujarat+India",
+    x: 46,
+    y: 66,
     country: "India"
-  },
-  {
-    id: "gurugram",
-    name: "Gurugram Office",
-    city: "Gurugram",
-    address: "COSMO India Pvt Ltd, Cyber City, Gurugram",
-    phone: "+91 124 1234 5678",
-    email: "gurugram@cosmo.com",
-    managerEmail: "manager.gurugram@cosmo.com",
-    managerName: "Neha Verma",
-    googleMapsLink: "https://maps.google.com/?q=Gurugram+Haryana+India",
-    x: 69,
-    y: 42,
-    country: "India"
-  },
-  {
-    id: "jamshedpur",
-    name: "Jamshedpur Office",
-    city: "Jamshedpur",
-    address: "COSMO India Pvt Ltd, Bistupur, Jamshedpur",
-    phone: "+91 657 1234 5678",
-    email: "jamshedpur@cosmo.com",
-    managerEmail: "manager.jamshedpur@cosmo.com",
-    managerName: "Anil Singh",
-    googleMapsLink: "https://maps.google.com/?q=Jamshedpur+India",
-    x: 76,
-    y: 48,
-    country: "India"
-  },
-  {
-    id: "rudrapur",
-    name: "Rudrapur Office",
-    city: "Rudrapur",
-    address: "COSMO India Pvt Ltd, SIDCUL, Rudrapur",
-    phone: "+91 594 1234 5678",
-    email: "rudrapur@cosmo.com",
-    managerEmail: "manager.rudrapur@cosmo.com",
-    managerName: "Deepak Joshi",
-    googleMapsLink: "https://maps.google.com/?q=Rudrapur+Uttarakhand+India",
-    x: 71,
-    y: 38,
-    country: "India"
-  },
-  {
-    id: "faridabad",
-    name: "Faridabad Office",
-    city: "Faridabad",
-    address: "COSMO India Pvt Ltd, Sector 21, Faridabad",
-    phone: "+91 129 1234 5678",
-    email: "faridabad@cosmo.com",
-    managerEmail: "manager.faridabad@cosmo.com",
-    managerName: "Suresh Gupta",
-    googleMapsLink: "https://maps.google.com/?q=Faridabad+Haryana+India",
-    x: 70,
-    y: 42,
-    country: "India"
-
-  },
-  {
-    id: "coimbatore",
-    name: "Coimbatore Office",
-    city: "Coimbatore",
-    address: "COSMO India Pvt Ltd, Peelamedu, Coimbatore",
-    phone: "+91 422 1234 5678",
-    email: "coimbatore@cosmo.com",
-    managerEmail: "manager.coimbatore@cosmo.com",
-    managerName: "Rajesh Kumar",
-    googleMapsLink: "https://maps.google.com/?q=Coimbatore+India",
-    x: 69,
-    y: 57,
-    country: "India"
-  },
-  {
-    id: "pune",
-    name: "Pune Office",
-    city: "Pune",
-    address: "COSMO India Pvt Ltd, Hinjewadi, Pune",
-    phone: "+91 20 1234 5678",
-    email: "pune@cosmo.com",
-    managerEmail: "manager.pune@cosmo.com",
-    managerName: "Sneha Deshpande",
-    googleMapsLink: "https://maps.google.com/?q=Pune+India",
-    x: 67,
-    y: 52,
-    country: "India"
-  },
-  {
-    id: "manesar",
-    name: "Manesar Office",
-    city: "Manesar",
-    address: "COSMO India Pvt Ltd, IMT Manesar, Haryana",
-    phone: "+91 124 1234 5678",
-    email: "manesar@cosmo.com",
-    managerEmail: "manager.manesar@cosmo.com",
-    managerName: "Rohit Sharma",
-    googleMapsLink: "https://maps.google.com/?q=Manesar+Haryana+India",
-    x: 68,
-    y: 35,
-    country: "India"
-  },
-  {
-    id: "gujarat",
-    name: "Gujarat Office",
-    city: "Gujarat",
-    address: "COSMO India Pvt Ltd, Sanand, Gujarat",
-    phone: "+91 79 1234 5678",
-    email: "gujarat@cosmo.com",
-    managerEmail: "manager.gujarat@cosmo.com",
-    managerName: "Amit Patel",
-    googleMapsLink: "https://maps.google.com/?q=Sanand+Gujarat+India",
-    x: 63,
-    y: 46,
-    country: "India"
-  },
-  {
-    id: "gurugram",
-    name: "Gurugram Office",
-    city: "Gurugram",
-    address: "COSMO India Pvt Ltd, Cyber City, Gurugram",
-    phone: "+91 124 1234 5678",
-    email: "gurugram@cosmo.com",
-    managerEmail: "manager.gurugram@cosmo.com",
-    managerName: "Neha Verma",
-    googleMapsLink: "https://maps.google.com/?q=Gurugram+Haryana+India",
-    x: 69,
-    y: 42,
-    country: "India"
-  },
-  {
-    id: "jamshedpur",
-    name: "Jamshedpur Office",
-    city: "Jamshedpur",
-    address: "COSMO India Pvt Ltd, Bistupur, Jamshedpur",
-    phone: "+91 657 1234 5678",
-    email: "jamshedpur@cosmo.com",
-    managerEmail: "manager.jamshedpur@cosmo.com",
-    managerName: "Anil Singh",
-    googleMapsLink: "https://maps.google.com/?q=Jamshedpur+India",
-    x: 76,
-    y: 48,
-    country: "India"
-  },
-  {
-    id: "rudrapur",
-    name: "Rudrapur Office",
-    city: "Rudrapur",
-    address: "COSMO India Pvt Ltd, SIDCUL, Rudrapur",
-    phone: "+91 594 1234 5678",
-    email: "rudrapur@cosmo.com",
-    managerEmail: "manager.rudrapur@cosmo.com",
-    managerName: "Deepak Joshi",
-    googleMapsLink: "https://maps.google.com/?q=Rudrapur+Uttarakhand+India",
-    x: 71,
-    y: 38,
-    country: "India"
-  },
-  {
-    id: "faridabad",
-    name: "Faridabad Office",
-    city: "Faridabad",
-    address: "COSMO India Pvt Ltd, Sector 21, Faridabad",
-    phone: "+91 129 1234 5678",
-    email: "faridabad@cosmo.com",
-    managerEmail: "manager.faridabad@cosmo.com",
-    managerName: "Suresh Gupta",
-    googleMapsLink: "https://maps.google.com/?q=Faridabad+Haryana+India",
   }
 ];
 
-const Marker = ({ x, y, onClick, isSelected, onHover, onMouseLeave }) => {
+const Marker = ({ x, y, onClick, isSelected }) => {
   return (
     <motion.div
       style={{
@@ -249,15 +83,13 @@ const Marker = ({ x, y, onClick, isSelected, onHover, onMouseLeave }) => {
         top: `${y}%`,
         transform: "translate(-50%, -50%)",
         cursor: "pointer",
-        zIndex: 100
+        zIndex: 1000
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.4 }}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      onMouseEnter={onHover}
-      onMouseLeave={onMouseLeave}
     >
       {/* Outer pulsing ring */}
       <motion.div
@@ -341,111 +173,6 @@ const Marker = ({ x, y, onClick, isSelected, onHover, onMouseLeave }) => {
   );
 };
 
-const HoverTooltip = ({ location, position }) => {
-  if (!location) return null;
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: 15 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.8, y: 15 }}
-        transition={{ 
-          duration: 0.2,
-          ease: "easeOut"
-        }}
-        style={{
-          position: "fixed",
-          left: position?.x || "50%",
-          top: position?.y || "50%",
-          transform: "translate(-50%, -100%)",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          borderRadius: "16px",
-          padding: "20px",
-          minWidth: "280px",
-          maxWidth: "320px",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-          zIndex: 1000,
-          marginTop: "-20px",
-          border: "3px solid #fff",
-          pointerEvents: "none"
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div style={{ marginBottom: "16px" }}>
-            <div style={{ 
-              fontSize: "20px", 
-              fontWeight: 800, 
-              color: "#fff",
-              marginBottom: "6px",
-              textShadow: "0 2px 4px rgba(0,0,0,0.2)"
-            }}>
-              {location.city}
-            </div>
-            <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.9)", fontWeight: 600 }}>
-              {location.country}
-            </div>
-          </div>
-
-          <div style={{ 
-            borderTop: "1px solid rgba(255,255,255,0.3)", 
-            paddingTop: "14px",
-            marginBottom: "12px"
-          }}>
-            <div style={{ 
-              fontSize: "11px", 
-              fontWeight: 700, 
-              color: "rgba(255,255,255,0.8)",
-              marginBottom: "10px",
-              letterSpacing: "1px"
-            }}>
-              REGIONAL MANAGER
-            </div>
-            <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-              <span style={{ color: "#fff", fontSize: "18px" }}>👤</span>
-              <div>
-                <div style={{ fontSize: "14px", color: "#fff", fontWeight: 700 }}>
-                  {location.managerName}
-                </div>
-                <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.9)" }}>
-                  {location.managerEmail}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <motion.a 
-            href={location.googleMapsLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "13px",
-              color: "#fff",
-              fontWeight: 700,
-              textDecoration: "none",
-              background: "rgba(255,255,255,0.2)",
-              padding: "10px 16px",
-              borderRadius: "8px",
-              backdropFilter: "blur(10px)"
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            🗺️ View on Google Maps
-          </motion.a>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
-
 const LocationPopup = ({ location, onClose, position }) => {
   if (!location) return null;
 
@@ -464,15 +191,17 @@ const LocationPopup = ({ location, onClose, position }) => {
           left: position?.x || "50%",
           top: position?.y || "50%",
           transform: "translate(-50%, -100%)",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          background: "rgba(255, 255, 255, 0.15)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
           borderRadius: "20px",
           padding: "28px",
           minWidth: "320px",
           maxWidth: "360px",
-          boxShadow: "0 25px 80px rgba(0,0,0,0.4)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.37)",
           zIndex: 1000,
           marginTop: "-25px",
-          border: "4px solid #fff"
+          border: "1px solid rgba(255, 255, 255, 0.18)"
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -484,15 +213,15 @@ const LocationPopup = ({ location, onClose, position }) => {
             position: "absolute",
             top: "16px",
             right: "16px",
-            background: "rgba(255,255,255,0.3)",
+            background: "rgba(255,255,255,0.4)",
             backdropFilter: "blur(10px)",
-            border: "2px solid #fff",
+            border: "2px solid rgba(255,255,255,0.5)",
             width: "32px",
             height: "32px",
             borderRadius: "50%",
             cursor: "pointer",
             fontSize: "18px",
-            color: "#fff",
+            color: "#1a1a1a",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
@@ -511,7 +240,7 @@ const LocationPopup = ({ location, onClose, position }) => {
             fontSize: "11px", 
             letterSpacing: "0.2em", 
             textTransform: "uppercase", 
-            color: "rgba(255,255,255,0.8)",
+            color: "rgba(0,0,0,0.7)",
             marginBottom: "10px",
             fontWeight: 700
           }}>
@@ -520,13 +249,13 @@ const LocationPopup = ({ location, onClose, position }) => {
           <h3 style={{ 
             fontSize: "22px", 
             fontWeight: 800, 
-            color: "#fff",
+            color: "#1a1a1a",
             marginBottom: "6px",
-            textShadow: "0 2px 4px rgba(0,0,0,0.2)"
+            textShadow: "0 2px 4px rgba(255,255,255,0.5)"
           }}>
             {location.name}
           </h3>
-          <div style={{ fontSize: "15px", color: "rgba(255,255,255,0.9)", fontWeight: 600 }}>
+          <div style={{ fontSize: "15px", color: "rgba(0,0,0,0.8)", fontWeight: 600 }}>
             {location.city}, {location.country}
           </div>
         </motion.div>
@@ -538,51 +267,51 @@ const LocationPopup = ({ location, onClose, position }) => {
           style={{ display: "grid", gap: "14px" }}
         >
           <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <span style={{ color: "#fff", fontSize: "18px" }}>📍</span>
-            <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.95)", lineHeight: "1.6" }}>
+            <span style={{ color: "#1a1a1a", fontSize: "18px" }}>📍</span>
+            <span style={{ fontSize: "14px", color: "rgba(0,0,0,0.85)", lineHeight: "1.6" }}>
               {location.address}
             </span>
           </div>
           
           <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <span style={{ color: "#fff", fontSize: "18px" }}>📞</span>
-            <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.95)" }}>
+            <span style={{ color: "#1a1a1a", fontSize: "18px" }}>📞</span>
+            <span style={{ fontSize: "14px", color: "rgba(0,0,0,0.85)" }}>
               {location.phone}
             </span>
           </div>
           
           <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-            <span style={{ color: "#fff", fontSize: "18px" }}>✉️</span>
-            <span style={{ fontSize: "14px", color: "rgba(255,255,255,0.95)" }}>
+            <span style={{ color: "#1a1a1a", fontSize: "18px" }}>✉️</span>
+            <span style={{ fontSize: "14px", color: "rgba(0,0,0,0.85)" }}>
               {location.email}
             </span>
           </div>
 
           <div style={{ 
-            borderTop: "1px solid rgba(255,255,255,0.3)", 
+            borderTop: "1px solid rgba(0,0,0,0.2)", 
             paddingTop: "14px", 
             marginTop: "6px"
           }}>
             <div style={{ 
               fontSize: "12px", 
               fontWeight: 700, 
-              color: "rgba(255,255,255,0.8)",
+              color: "rgba(0,0,0,0.7)",
               marginBottom: "10px",
               letterSpacing: "1px"
             }}>
               MANAGER CONTACT
             </div>
             <div style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
-              <span style={{ color: "#fff", fontSize: "18px" }}>👤</span>
+              <span style={{ color: "#1a1a1a", fontSize: "18px" }}>👤</span>
               <div>
-                <div style={{ fontSize: "15px", color: "#fff", fontWeight: 700 }}>
+                <div style={{ fontSize: "15px", color: "#1a1a1a", fontWeight: 700 }}>
                   {location.managerName}
                 </div>
                 <a 
                   href={`mailto:${location.managerEmail}`}
                   style={{ 
                     fontSize: "13px", 
-                    color: "rgba(255,255,255,0.9)", 
+                    color: "rgba(0,0,0,0.75)", 
                     textDecoration: "none" 
                   }}
                 >
@@ -605,10 +334,10 @@ const LocationPopup = ({ location, onClose, position }) => {
             style={{
               width: "100%",
               padding: "14px 24px",
-              background: "rgba(255,255,255,0.25)",
+              background: "rgba(255,255,255,0.35)",
               backdropFilter: "blur(10px)",
-              color: "#fff",
-              border: "2px solid rgba(255,255,255,0.5)",
+              color: "#1a1a1a",
+              border: "2px solid rgba(255,255,255,0.6)",
               borderRadius: "12px",
               fontSize: "15px",
               fontWeight: 700,
@@ -625,10 +354,10 @@ const LocationPopup = ({ location, onClose, position }) => {
             style={{
               width: "100%",
               padding: "14px 24px",
-              background: "rgba(255,255,255,0.25)",
+              background: "rgba(255,255,255,0.35)",
               backdropFilter: "blur(10px)",
-              color: "#fff",
-              border: "2px solid rgba(255,255,255,0.5)",
+              color: "#1a1a1a",
+              border: "2px solid rgba(255,255,255,0.6)",
               borderRadius: "12px",
               fontSize: "15px",
               fontWeight: 700,
@@ -647,22 +376,11 @@ const LocationPopup = ({ location, onClose, position }) => {
 export default function WorldMap() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [popupPosition, setPopupPosition] = useState(null);
-  const [hoveredLocation, setHoveredLocation] = useState(null);
-  const [hoverPosition, setHoverPosition] = useState(null);
 
   const handleLocationClick = (location, event) => {
+    event.stopPropagation();
     setSelectedLocation(location);
     setPopupPosition({ x: event.clientX, y: event.clientY });
-  };
-
-  const handleLocationHover = (location, event) => {
-    setHoveredLocation(location);
-    setHoverPosition({ x: event.clientX, y: event.clientY });
-  };
-
-  const handleLocationLeave = () => {
-    setHoveredLocation(null);
-    setHoverPosition(null);
   };
 
   return (
@@ -714,8 +432,8 @@ export default function WorldMap() {
         >
           {/* World Map Image */}
           <img
-            src="/images/world%20map.png"
-            alt="World Map"
+            src="/images/india-map.png"
+            alt="India Map"
             style={{
               width: "100%",
               height: "auto",
@@ -732,19 +450,9 @@ export default function WorldMap() {
               x={location.x}
               y={location.y}
               onClick={(e) => handleLocationClick(location, e)}
-              onHover={(e) => handleLocationHover(location, e)}
-              onMouseLeave={handleLocationLeave}
               isSelected={selectedLocation?.id === location.id}
             />
           ))}
-
-          {/* Hover Tooltip */}
-          {hoveredLocation && (
-            <HoverTooltip
-              location={hoveredLocation}
-              position={hoverPosition}
-            />
-          )}
 
           {/* Popup */}
           {selectedLocation && (

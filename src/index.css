@@ -67,7 +67,7 @@ a {
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   animation: siri-ring 4.5s ease-in-out infinite;
 }
 
@@ -121,6 +121,46 @@ a {
   height: 48px;
   object-fit: contain;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.site-header__menu-rotating-text {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+  animation: rotate-text 8s linear infinite;
+}
+
+.site-header__menu-rotating-text text {
+  fill: #000000;
+}
+
+.rotating-text-path {
+  animation: text-dash 8s linear infinite;
+}
+
+@keyframes rotate-text {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes text-dash {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
 }
 
 .site-header__menu--scrolling .site-header__menu-icon--clockwise {

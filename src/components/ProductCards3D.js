@@ -14,7 +14,7 @@ const ProductCards3D = () => {
       id: "air-flow-tester", 
       name: "Air Flow Tester",
       subtitle: "Flow Measurement",
-      image: "/images/air-leak-tester.png",
+      image: "/images/air-flow-tester.png",
       overlayImage: "/images/flow-tester-overlay.png"
     }
   ];
