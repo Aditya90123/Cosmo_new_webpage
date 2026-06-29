@@ -63,7 +63,7 @@ export default function Footer() {
           top: 0,
           left: 0,
           width: "100%",
-          height: "250px",
+          height: "600px",
           backgroundImage: "url('/images/footer_map_clean.png')",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

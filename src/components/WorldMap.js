@@ -426,7 +426,10 @@ export default function WorldMap() {
             margin: "0 auto",
             border: "none",
             borderRadius: "0",
-            overflow: "hidden"
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center"
           }}
           onClick={() => setSelectedLocation(null)}
         >
@@ -439,7 +442,8 @@ export default function WorldMap() {
               height: "auto",
               display: "block",
               background: "transparent",
-              opacity: 1
+              opacity: 1,
+              marginLeft: "50px"
             }}
           />
 

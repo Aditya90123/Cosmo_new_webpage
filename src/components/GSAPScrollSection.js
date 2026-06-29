@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./GSAPScrollSection.css";
@@ -8,55 +8,41 @@ gsap.registerPlugin(ScrollTrigger);
 export default function GSAPScrollSection() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
+  const secondTextContainerRef = useRef(null);
   const firstTextRef = useRef(null);
   const secondTextRef = useRef(null);
-  const imageRef = useRef(null);
-
-  // Image list for hover animation – adjust filenames as needed
-  const images = [
-    "/images/air leak testers/AF-R221.png",
-    "/images/air leak testers/LS-1866.png",
-    "/images/air leak testers/LS-R700.png",
-    "/images/air leak testers/LS-R902.png",
-  ];
-  const [currentImgIdx, setCurrentImgIdx] = useState(0);
-  const hoverIntervalRef = useRef(null);
-
-  const handleMouseEnter = () => {
-    // Start cycling through images every 400ms
-    hoverIntervalRef.current = setInterval(() => {
-      setCurrentImgIdx((prev) => (prev + 1) % images.length);
-    }, 400);
-  };
-
-  const handleMouseLeave = () => {
-    // Stop cycling and reset to first image
-    clearInterval(hoverIntervalRef.current);
-    hoverIntervalRef.current = null;
-    setCurrentImgIdx(0);
-  };
+  const thirdTextRef = useRef(null);
+  const fourthTextRef = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const text = textRef.current;
+    const secondTextContainer = secondTextContainerRef.current;
     const firstText = firstTextRef.current;
     const secondText = secondTextRef.current;
-    const image = imageRef.current;
+    const thirdText = thirdTextRef.current;
+    const fourthText = fourthTextRef.current;
 
-    if (!section || !text || !firstText || !secondText || !image) return;
+    if (!section || !text || !secondTextContainer || !firstText || !secondText || !thirdText || !fourthText) return;
 
-    // Clean up any existing ScrollTriggers
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    let scrollTriggerInstance = null;
+    let timelineInstance = null;
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
-        start: "top center",
-        end: "bottom center",
+        start: "center center",
+        end: "+=650",
         scrub: 1,
         toggleActions: "play none none reverse",
+        pin: true,
+        pinSpacing: true,
       },
     });
+
+    // Store references
+    scrollTriggerInstance = tl.scrollTrigger;
+    timelineInstance = tl;
 
     // First, reveal "AIR LEAK" then "TESTER"
     tl.to(secondText, {
@@ -64,26 +50,43 @@ export default function GSAPScrollSection() {
       duration: 0.5,
       ease: "power2.out"
     })
-    // Then fade out both text parts
+    // Then fade out "AIR LEAK TESTER"
     .to([firstText, secondText], {
       opacity: 0,
       y: -30,
       scale: 0.9,
-      duration: 1,
+      duration: 0.8,
       ease: "power2.out"
     })
-    // Then reveal image
-    .to(image, {
+    // Then reveal "AIR FLOW" then "TESTER"
+    .to(secondTextContainer, {
       opacity: 1,
-      scale: 1,
-      y: 0,
-      duration: 1.2,
+      duration: 0.3,
       ease: "power2.out"
-    }, "<0.3");
+    })
+    .to(thirdText, {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+    .to(fourthText, {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+    // Keep the final state visible
+    .set([thirdText, fourthText], {
+      opacity: 1
+    });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      clearInterval(hoverIntervalRef.current);
+      // Clean up properly
+      if (scrollTriggerInstance) {
+        scrollTriggerInstance.kill();
+      }
+      if (timelineInstance) {
+        timelineInstance.kill();
+      }
     };
   }, []);
 
@@ -95,14 +98,10 @@ export default function GSAPScrollSection() {
             <span ref={firstTextRef} className="first-text">AIR LEAK</span>
             <span ref={secondTextRef} className="second-text">TESTER</span>
           </h1>
-        </div>
-        <div
-          ref={imageRef}
-          className="image-container"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <img src={images[currentImgIdx]} alt="Air Leak Tester" />
+          <h1 ref={secondTextContainerRef} className="scroll-text second-text-container">
+            <span ref={thirdTextRef} className="third-text">AIR FLOW</span>
+            <span ref={fourthTextRef} className="fourth-text">TESTER</span>
+          </h1>
         </div>
       </div>
     </section>

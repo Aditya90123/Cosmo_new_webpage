@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // Announcement text – replace with actual message as needed
-const announcementText = "Cosmo Instruments – Innovating precision engineering worldwide";
+const announcementText = "⚡ EV Summit | 22 Aug 2025 | New Delhi – Driving the future of electric mobility!";
 
 export default function AnnounceScroll() {
   return (
@@ -13,8 +13,8 @@ export default function AnnounceScroll() {
         color: "#111111",
         textAlign: "center",
         margin: 0,
-        padding: 0,
-        transform: "translateY(-8px)",
+        padding: "15px 0",
+        transform: "translateY(0)",
       }}
     >
       <motion.div
