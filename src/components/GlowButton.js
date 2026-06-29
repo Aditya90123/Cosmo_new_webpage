@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import './GlowButton.css';
 import { Link } from 'react-router-dom';
 

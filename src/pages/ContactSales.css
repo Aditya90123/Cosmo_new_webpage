@@ -47,10 +47,13 @@
   align-items: center;
   pointer-events: none;
   z-index: 2;
+  overflow: hidden;
 }
 
 .india-map img {
-  width: min(85vw, 950px);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0.08;
   filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.5))
     drop-shadow(0 0 80px rgba(59, 130, 246, 0.4));
@@ -257,6 +260,7 @@ button:hover {
   }
 
   .india-map img {
-    width: 130vw;
+    width: 100%;
+    height: 100%;
   }
 }

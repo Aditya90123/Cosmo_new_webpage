@@ -74,15 +74,6 @@ export default function AllProducts() {
                   ))}
                 </div>
 
-                <div className="flip-features">
-                  <h4 className="flip-features-title">Key Features</h4>
-                  <ul className="flip-features-list">
-                    {product.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
-
                 <div className="back-actions">
                   <button className="flip-card-btn primary">Request Quote</button>
                   <button className="flip-card-btn secondary">Download Specs</button>

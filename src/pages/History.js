@@ -45,7 +45,7 @@ export default function History() {
 
     const ctx = canvas.getContext('2d');
     let W, H, t = 0;
-    let mx = -9999, my = -9999, pvx = 0, pvy = 0, vx = 0, vy = 0;
+    let mx = -9999, my = -9999, vx = 0, vy = 0;
     let pmx = -9999, pmy = -9999;
     let animationFrameId;
 
