@@ -267,6 +267,9 @@ export default function History() {
       if (parallaxAnim.scrollTrigger) parallaxAnim.scrollTrigger.kill();
       parallaxAnim.kill();
       ctxGsap.revert();
+      // Clean up any remaining ScrollTriggers
+      const triggers = ScrollTrigger.getAll();
+      triggers.forEach(trigger => trigger.kill());
     };
   }, []);
 
